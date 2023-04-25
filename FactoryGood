@@ -1,0 +1,247 @@
+package fr.icom.info.m1.balleauprisonnier_mvn;
+
+
+import java.util.Random;
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Rotate;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
+/**
+ * 
+ * Classe gerant un joueur
+ *
+ */
+public interface Projectile 
+{
+	public void adjustBall();
+	public void throw_();
+	public boolean isLaunched();
+	public void launch();
+	
+}
+
+
+package fr.icom.info.m1.balleauprisonnier_mvn;
+
+
+import java.util.Random;
+
+import fr.icom.info.m1.balleauprisonnier_mvn.Projectile;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Rotate;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
+/**
+ * 
+ * Classe gerant un joueur
+ *
+ */
+public class fastProj implements Projectile
+{
+	String side;
+	long cur=0;
+	Boolean launched=false;
+	ImageView img;
+	double angle;
+	double x;
+	double y;
+	public fastProj(double xpos, double ypos,double direction){
+		this.img = new ImageView("assets/small_ball.png"); 
+		this.img.setX(xpos);
+		this.img.setY(ypos);
+		this.angle=direction;
+	}
+	@Override
+	public void adjustBall() {
+		if(this.side.equals("bottom")) {
+			this.x+=30;
+			this.y+=32;
+			this.img.setX(this.x);
+			this.img.setY(this.y);
+		}
+		else {
+			this.x+=7;
+			this.y+=33;
+			this.img.setX(this.x);
+			this.img.setY(this.y);			
+		}
+	}
+	@Override
+	public void throw_() {
+		if(System.currentTimeMillis()-cur<1) {
+			return;
+		}
+		cur = System.currentTimeMillis();
+		if(this.side.equals("bottom")) {
+			this.y-=4;
+			this.img.setY(this.y);
+			System.out.print(this.y);
+		}
+		else {
+			this.y+=4;
+			this.img.setY(this.y);
+			System.out.print(this.y);			
+		}
+	}	
+	@Override
+	public boolean isLaunched() {
+		return launched;
+	}
+	@Override
+	public void launch() {
+		launched=true;
+	}
+	
+}
+
+
+
+package fr.icom.info.m1.balleauprisonnier_mvn;
+
+
+import java.util.Random;
+
+import fr.icom.info.m1.balleauprisonnier_mvn.Projectile;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Rotate;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
+/**
+ * 
+ * Classe gerant un joueur
+ *
+ */
+public class slowProj implements Projectile
+{
+	String side;
+	long cur=0;
+	Boolean launched=false;
+	ImageView img;
+	double angle;
+	double x;
+	double y;
+	public slowProj(double xpos, double ypos,double direction){
+		this.img = new ImageView("assets/tennis_ball.png"); 
+		this.img.setX(xpos);
+		this.img.setY(ypos);
+		this.angle=direction;
+	}
+	@Override
+	public void adjustBall() {
+		if(this.side.equals("bottom")) {
+			this.x+=35;
+			this.y+=27;
+			this.img.setX(this.x);
+			this.img.setY(this.y);
+		}
+		else {
+			//this.x;
+			this.x-=5;
+			this.y+=27;
+			this.img.setX(this.x);
+			this.img.setY(this.y);			
+		}
+	}
+	@Override
+	public void throw_() {
+		if(System.currentTimeMillis()-cur<1) {
+			return;
+		}
+		cur = System.currentTimeMillis();
+		if(this.side.equals("bottom")) {
+			this.y-=4;
+			this.img.setY(this.y);
+		}
+		else {
+			//(double)(Math.cos(angle*Math.PI/180) * 4);	
+			this.y+=4;//(double)(Math.cos(angle*Math.PI/180) * 4);	
+			//this.img.setY(this.x);
+			this.img.setY(this.y);
+		}
+	}	
+	@Override
+	public boolean isLaunched() {
+		return launched;
+	}
+	@Override
+	public void launch() {
+		launched=true;
+	}
+}
+
+
+
+package fr.icom.info.m1.balleauprisonnier_mvn;
+
+
+import java.util.Random;
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Rotate;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
+/**
+ * 
+ * Classe gerant un joueur
+ *
+ */
+public class ProjectileFactory
+{
+	Image img;
+	double x;
+	double y;
+	double angle;
+	public ProjectileFactory(){
+	}
+	public Projectile createproj(String type,double xpos, double ypos,double angle) {
+		Projectile proj = null;
+		if(type.equalsIgnoreCase("fast")) {
+			return new fastProj(xpos,ypos,angle);
+		}
+		else if(type.equalsIgnoreCase("slow")) {
+			return new slowProj(xpos,ypos,angle);
+		}
+	}
+}
+
+Partie main
+    	if(randN==0) {
+        	if(randJ==0) {
+           		proj=pf.createproj("slow",0,0,0);
+        		proj.x=((Player)team1[0]).x;
+    			proj.y=((Player)team1[0]).y; 
+        		proj.side=((Player)team1[0]).side;
+        		proj.adjustBall(); 
+    		}
+        	else {
+           		proj=pf.createproj("slow",0,0,0);
+        		proj.x=((Player)team2[0]).x;
+        		proj.y=((Player)team2[0]).y; 
+        		proj.side=((Player)team2[0]).side;
+        		proj.adjustBall();  
+        	}
+    	}
+    	else {
+    		proj=pf.createproj("fast",0,0,0); 
+        	if(randJ==0) {
+        		proj.x=((Player)team1[0]).x;
+    			proj.y=((Player)team1[0]).y; 
+        		proj.side=((Player)team1[0]).side;
+        		proj.adjustBall(); 
+    		}
+        	else {
+        		proj.x=((Player)team2[0]).x;
+        		proj.y=((Player)team2[0]).y; 
+        		proj.side=((Player)team2[0]).side;
+        		proj.adjustBall();  
+        	}
+    	}

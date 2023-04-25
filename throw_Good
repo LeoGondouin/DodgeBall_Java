@@ -1,0 +1,22 @@
+	public void throw_(double angle) {
+    if(System.currentTimeMillis()-cur<1) {
+      return;
+    }
+    cur = System.currentTimeMillis();
+    if(this.side.equals("bottom")) {
+    			this.x -= Math.cos(this.angle) * 3;
+          this.y -= Math.sin(this.angle) * 3;
+          this.img.setX(this.x);
+          this.img.setY(this.y);
+      }
+     else {
+     			this.x += Math.cos(this.angle) * 3;
+			    this.y += Math.sin(this.angle) * 3;	
+			    this.img.setX(this.x);
+			    this.img.setY(this.y);
+     }
+  }
+  
+  
+  Puis appel dans Field au moment du shoot:
+    proj.throw_(Math.toRadians(joueurs[x].angle);
